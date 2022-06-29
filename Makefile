@@ -6,7 +6,7 @@ include config.mk
 SRC = drw.c dwm.c util.c
 OBJ = ${SRC:.c=.o}
 
-all: clean options dwm run
+all: clean options dwm
 
 run:
 	DISPLAY=:1 ./dwm
