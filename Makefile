@@ -9,7 +9,7 @@ OBJ = ${SRC:.c=.o}
 all: clean options dwm run
 
 run:
-	DISPLAY=:2 ./dwm
+	DISPLAY=:1 ./dwm
 
 options:
 	@echo dwm build options:

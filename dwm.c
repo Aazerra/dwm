@@ -1570,8 +1570,6 @@ layoutscroll(const Arg *arg)
 	int switchto = selmon->ltcur + arg->i;
 
 	int l = LENGTH(layouts);
-	fprintf(stderr, "%d - ", l);
-	fprintf(stderr, "%d\n", switchto);
 
 	if (switchto == l)
 		switchto = 0;
@@ -1747,8 +1745,6 @@ sigterm(int unused)
 void
 spawn(const Arg *arg)
 {
-	if (arg->v == dmenucmd)
-		dmenumon[0] = '0' + selmon->num;
 	if (fork() == 0) {
 		if (dpy)
 			close(ConnectionNumber(dpy));
