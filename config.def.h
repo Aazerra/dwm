@@ -15,7 +15,6 @@ static unsigned int gappov 			= 30;  /* vert outer gap between windows and scree
 static int smartgaps 				= 1;				  /* 1 means no outer gap when there is only one window */
 static int showbar            		= 1;        /* 0 means no bar */
 static int topbar             		= 1;        /* 0 means bottom bar */
-static const int focusonwheel 		= 1;
 static const int horizpadbar 		= 3;		  /* horizontal padding for statusbar */
 static const int vertpadbar 		= 3;		  /* vertical padding for statusbar */
 static const char *fonts[] 			= {"monospace:size=12", "JoyPixels:pixelsize=10:antialias=true:autohint=true"};
@@ -59,6 +58,7 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	{ NULL,		  NULL,		  "win0",	  0, 		    1,			 -1 },
 };
 
 /* layout(s) */
@@ -132,6 +132,7 @@ ResourcePref resources[] = {
 };
 
 #include <X11/XF86keysym.h>
+#include "shiftview.c"
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -176,10 +177,12 @@ static Key keys[] = {
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 
+	// Monitor Keys
 	{ MODKEY,                       XK_Left,  focusmon,       {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_Left,  tagmon,         {.i = -1 } },
 	{ MODKEY,                       XK_Right, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_Right, tagmon,         {.i = +1 } },
+
 	{ MODKEY|ShiftMask,             XK_h,      layoutscroll,   {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_l,      layoutscroll,   {.i = +1 } },
 	{ MODKEY,                       XK_n,      togglealttag,   {0} },
@@ -235,6 +238,7 @@ static Key keys[] = {
 	{ 0, XF86XK_MonBrightnessDown,	spawn,		{.v = (const char*[]){ "light", "-U", "15", NULL } } },
 
 	{ 0, XF86XK_PowerOff,		spawn,		{.v = (const char*[]){ "sysact", NULL } } },
+	{ MODKEY,					XK_BackSpace,	spawn,		{.v = (const char*[]){ "sysact", NULL } } },
 	{ 0, XF86XK_Calculator,		spawn,		{.v = (const char*[]){ TERMINAL, "-e", "bc", "-l", NULL } } },
 
 };
@@ -249,10 +253,12 @@ static Button buttons[] = {
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button1,        resizemouse,    {0} },
+	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkTagBar,		0,		Button4,	shiftview,	{.i = -1} },
+	{ ClkTagBar,		0,		Button5,	shiftview,	{.i = 1} },
 };
 
