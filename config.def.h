@@ -17,7 +17,7 @@ static int showbar            		= 1;        /* 0 means no bar */
 static int topbar             		= 1;        /* 0 means bottom bar */
 static const int horizpadbar 		= 3;		  /* horizontal padding for statusbar */
 static const int vertpadbar 		= 3;		  /* vertical padding for statusbar */
-static const char *fonts[] 			= {"monospace:size=12", "JoyPixels:pixelsize=10:antialias=true:autohint=true"};
+static char *fonts[]          = { "monospace:size=12", "Noto Color Emoji:pixelsize=11"  };
 static char normbgcolor[] 			= "#282C34";
 static char normbordercolor[] 		= "#61afef";
 static char normfgcolor[]           = "#979fad";
@@ -37,7 +37,7 @@ static char *colors[][3] = {
 	 const void *cmd;
 } Sp;
 
-const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL};
+const char *spcmd1[] = {TERMINAL, "-n", "spterm", "-g", "120x34", NULL};
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm", spcmd1},
@@ -58,7 +58,9 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	{ TERMCLASS,  "spterm",   NULL,       SPTAG(0),     1,           -1 },
 	{ NULL,		  NULL,		  "win0",	  0, 		    1,			 -1 },
+	
 	{ "jetbrains-studio",		  NULL,		  " ",	  0, 		    1,			 -1 },
 };
 
@@ -229,7 +231,7 @@ static Key keys[] = {
 	{ 0, XF86XK_AudioMute,			spawn,		SHCMD("pamixer -t") },
 	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("pamixer -i 3") },
 	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("pamixer -d 3") },
-	{ 0, XF86XK_AudioPrev,			spawn,		{.v = (const char*[]){ "mpc", "prev",  NULL } } },
+	{ 0, XF86XK_AudioPrev,			spawn,		{.v = (const char*[]){ "playerctl", "previous",  NULL } } },
 	{ 0, XF86XK_AudioNext,			spawn,		{.v = (const char*[]){ "mpc", "next",  NULL } } },
 	{ 0, XF86XK_AudioPause,			spawn,		{.v = (const char*[]){ "mpc", "pause", NULL } } },
 	{ 0, XF86XK_AudioPlay,			spawn,		{.v = (const char*[]){ "mpc", "play",  NULL } } },
